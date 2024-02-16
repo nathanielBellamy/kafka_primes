@@ -4,8 +4,20 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Properties;
 
+public enum ListType { ARRAY_LIST, LINKED_LIST }
+
 public class PrimeProducer {
-    public static void main(String[] args) {
+    static List primes;
+
+    public PrimeProducer(ListType listType) {
+        return switch (listType) {
+            case ARRAY_LIST     -> primes = new ArrayList<Integer>();
+            case LINKED_LIST    -> primes = new LinkedList<Integer>();
+            default             -> throw new IllegalArgumentException("Unrecognized List Type");
+        }
+    }
+
+    public void main(String[] args) {
         String topic = "primes";
         Properties props = new Properties();
 
@@ -15,7 +27,6 @@ public class PrimeProducer {
 
         Producer<Integer, Integer> producer = new KafkaProducer<>(props);
 
-        List<Integer> primes = new LinkedList<Integer>();
         primes.add(2);
         producer.send(new ProducerRecord<>(topic, 2, 2));
 
@@ -25,7 +36,10 @@ public class PrimeProducer {
           boolean isPrime = true;
           for (int j = 0; j < primes.size(); j++)
           {
-            if (i % primes.get(j) == 0) { isPrime = false; }
+            if (i % primes.get(j) == 0) {
+              isPrime = false;
+              break;
+            }
           }
 
           if (isPrime)
