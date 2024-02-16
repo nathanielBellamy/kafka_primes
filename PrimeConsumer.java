@@ -8,24 +8,25 @@ import java.util.Properties;
 
 public class PrimeConsumer {
     public static void main(String[] args) {
-        String topicName = "testTopic";
+        String topic = "primes";
         Properties props = new Properties();
 
         props.put("bootstrap.servers", "localhost:9092");
         props.put("group.id", "testGroup");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
 
-        Consumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList(topicName));
+        Consumer<Integer, Integer> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Arrays.asList(topic));
 
-        while (true) {
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-            records.forEach(record -> {
-                System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
-            });
+        while (true)
+        {
+          ConsumerRecords<Integer, Integer> records = consumer.poll(Duration.ofMillis(100));
+          records.forEach(record -> {
+            System.out.printf("offset = %d, key = %d, value = %d%n", record.offset(), record.key(), record.value());
+          });
         }
     }
 }

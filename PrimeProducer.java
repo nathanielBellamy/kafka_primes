@@ -6,19 +6,36 @@ import java.util.Properties;
 
 public class PrimeProducer {
     public static void main(String[] args) {
-        String topicName = "primes";
+        String topic = "primes";
         Properties props = new Properties();
 
         props.put("bootstrap.servers", "localhost:9092");
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("key.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
 
-        Producer<String, String> producer = new KafkaProducer<>(props);
+        Producer<Integer, Integer> producer = new KafkaProducer<>(props);
 
-        for(int i = 0; i < 10; i++)
-            producer.send(new ProducerRecord<>(topicName, Integer.toString(i), "Message " + i));
+        List<Integer> primes = new LinkedList<Integer>();
+        primes.add(2);
+        producer.send(new ProducerRecord<>(topic, 2, 2));
+
+        int i = 3;
+        while (true)
+        {
+          boolean isPrime = true;
+          for (int j = 0; j < primes.size(); j++)
+          {
+            if (i % primes.get(j) == 0) { isPrime = false; }
+          }
+
+          if (isPrime)
+          {
+            primes.add(i);
+            i++;
+            producer.send(new ProducerRecord<>(topic, i, i));
+          }
+        }
 
         producer.close();
     }
 }
-
