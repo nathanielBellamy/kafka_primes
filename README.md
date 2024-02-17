@@ -1,6 +1,5 @@
 # Kafka by Doing
 
-
 ## From https://kafka.apache.org/quickstart:
 ### To Start a Basic Kafka Instance
 > Kafka with ZooKeeper
@@ -32,6 +31,10 @@ $ bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --boo
 ```
 
 ## Kafka Connect: Stream Data from Kafka to another Service
+
+### Standalone Mode:
+- single process, easy to manage
+- not fault tolerant
 
 ```
 $ bin/connect-standalone.sh config/connect-standalone.properties [connector1.properties connector2.properties ...]
