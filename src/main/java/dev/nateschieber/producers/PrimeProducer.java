@@ -7,9 +7,10 @@ import java.util.Properties;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Vector;
 import java.util.Iterator;
 
-public class PrimeProducer extends KafkaProducer implements Runnable {
+public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Runnable {
     List<Integer> primes;
 
     public
@@ -20,6 +21,7 @@ public class PrimeProducer extends KafkaProducer implements Runnable {
       switch (listType) {
           case ARRAY_LIST     -> this.primes = new ArrayList<Integer>();
           case LINKED_LIST    -> this.primes = new LinkedList<Integer>();
+          case VECTOR         -> this.primes = new Vector<Integer>();
           default             -> throw new IllegalArgumentException("Unrecognized List Type");
       }
     }

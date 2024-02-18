@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,12 +22,13 @@ class PrimeProducerTests {
   @Test
   void
   storesPrimesInSpecifiedListType() {
-    PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, KafkaPrimes.producerProps());
     PrimeProducer producerArray = new PrimeProducer(ListType.ARRAY_LIST, KafkaPrimes.producerProps());
+    PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, KafkaPrimes.producerProps());
+    PrimeProducer producerVector = new PrimeProducer(ListType.VECTOR, KafkaPrimes.producerProps());
 
-    assertThat(producerLinked.primes.size()).isEqualTo(0);
-    assertThat(producerLinked.primes).isInstanceOf(LinkedList.class);
     assertThat(producerArray.primes).isInstanceOf(ArrayList.class);
+    assertThat(producerLinked.primes).isInstanceOf(LinkedList.class);
+    assertThat(producerVector.primes).isInstanceOf(Vector.class);
   }
 
 }
