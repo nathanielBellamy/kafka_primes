@@ -1,15 +1,17 @@
 # Kafka by Doing
 
+
+## To Run:
 ```
 ./gradlew bootRun
 ```
-
 - produce primes on one thread
 - consume them on another
 
-
-
-
+## To Run Tests:
+```
+./gradlew test
+```
 
 ---
 ## For Reference:
