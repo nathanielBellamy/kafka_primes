@@ -1,5 +1,18 @@
 # Kafka by Doing
 
+```
+./gradlew bootRun
+```
+
+- produce primes on one thread
+- consume them on another
+
+
+
+
+
+---
+## For Reference:
 ## From https://kafka.apache.org/quickstart:
 ### To Start a Basic Kafka Instance
 > Kafka with ZooKeeper
