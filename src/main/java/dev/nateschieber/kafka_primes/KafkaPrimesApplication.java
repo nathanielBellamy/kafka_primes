@@ -28,14 +28,18 @@ public class KafkaPrimesApplication {
     props.put("value.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
     props.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
     props.put("value.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
-
-    PrimeConsumer consumer = new PrimeConsumer(props);
     PrimeProducer producer = new PrimeProducer(ListType.LINKED_LIST, props);
+
+    props.put("enable.auto.commit", "true");
+    props.put("auto.commit.interval.ms", "1000");
+    PrimeConsumer consumer = new PrimeConsumer(props);
 
     Thread consumerThread = new Thread(consumer);
     consumerThread.start();
 
     Thread producerThread = new Thread(producer);
     producerThread.start();
+
+    // Thread[] threads = { consumerThread, producerThread };
   }
 }

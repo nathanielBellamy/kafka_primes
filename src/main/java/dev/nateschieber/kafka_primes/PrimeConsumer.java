@@ -13,8 +13,6 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
     PrimeConsumer(Properties props)
     {
       super(props);
-      props.put("enable.auto.commit", "true");
-      props.put("auto.commit.interval.ms", "1000");
     }
 
     public
