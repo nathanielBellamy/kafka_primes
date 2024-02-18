@@ -1,4 +1,4 @@
-package kafka_primes;
+package consumer;
 
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -8,8 +8,10 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 
-public class PrimeConsumer {
-    public static void main(String[] args) {
+public class PrimeConsumer extends Thread implements Runnable{
+    public
+    void
+    run() {
         String topic = "primes";
         Properties props = new Properties();
 
@@ -25,6 +27,7 @@ public class PrimeConsumer {
 
         while (true)
         {
+          // System.out.printf("consume primes");
           ConsumerRecords<Integer, Integer> records = consumer.poll(Duration.ofMillis(100));
           records.forEach(record -> {
             System.out.printf("offset = %d, key = %d, value = %d%n", record.offset(), record.key(), record.value());
