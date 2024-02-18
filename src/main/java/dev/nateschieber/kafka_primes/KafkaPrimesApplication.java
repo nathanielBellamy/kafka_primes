@@ -3,8 +3,8 @@ package dev.nateschieber.kafka_primes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Properties;
-import consumer.PrimeConsumer;
-import producer.PrimeProducer;
+import dev.nateschieber.consumers.PrimeConsumer;
+import dev.nateschieber.producers.PrimeProducer;
 import kafka_primes.ListType;
 
 @SpringBootApplication

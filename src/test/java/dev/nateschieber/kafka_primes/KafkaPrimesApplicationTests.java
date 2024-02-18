@@ -1,4 +1,4 @@
-package nateschieber.dev.kafka_primes;
+package dev.nateschieber.kafka_primes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
