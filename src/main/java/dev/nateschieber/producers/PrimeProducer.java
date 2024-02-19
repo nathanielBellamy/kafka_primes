@@ -20,9 +20,9 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
       super(props);
 
       switch (listType) {
-          case ARRAY_LIST     -> { this.primes = new ArrayList<Integer>();     this.topic = "primes_array";  }
-          case LINKED_LIST    -> { this.primes = new LinkedList<Integer>();    this.topic = "primes_linked"; }
-          case VECTOR         -> { this.primes = new Vector<Integer>();        this.topic = "primes_vector"; }
+          case ARRAY_LIST     -> { this.primes = new ArrayList<Integer>();     this.topic = "primes-array";  }
+          case LINKED_LIST    -> { this.primes = new LinkedList<Integer>();    this.topic = "primes-linked"; }
+          case VECTOR         -> { this.primes = new Vector<Integer>();        this.topic = "primes-vector"; }
           default             -> throw new IllegalArgumentException("Unrecognized List Type");
       }
     }

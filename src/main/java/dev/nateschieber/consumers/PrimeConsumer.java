@@ -25,7 +25,7 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
     void
     run()
     {
-        this.subscribe(Arrays.asList("primes_array", "primes_linked", "primes_vector"));
+        this.subscribe(Arrays.asList("primes-array", "primes-linked", "primes-vector"));
 
         while (true)
         {
@@ -34,13 +34,13 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
           records.forEach(record -> {
             // System.out.printf("topic - %s,offset = %d, key = %d, value = %d%n", record.topic(), record.offset(), record.key(), record.value());
             switch (record.topic()) {
-              case "primes_array"   -> this.newestArrayPrime = record.value();
-              case "primes_linked"  -> this.newestLinkedPrime = record.value();
-              case "primes_vector"  -> this.newestVectorPrime = record.value();
+              case "primes-array"   -> this.newestArrayPrime = record.value();
+              case "primes-linked"  -> this.newestLinkedPrime = record.value();
+              case "primes-vector"  -> this.newestVectorPrime = record.value();
             }
 
             System.out.printf(
-              "array: %d \nlinked: %d \nvector: %d \n===\n",
+              "\n array : %d \n linked: %d \n vector: %d \n===\n",
               this.newestArrayPrime,
               this.newestLinkedPrime,
               this.newestVectorPrime
