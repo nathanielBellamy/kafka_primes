@@ -1,7 +1,6 @@
 package dev.nateschieber.producers;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.Properties;
 import java.util.ArrayList;
@@ -11,8 +10,9 @@ import java.util.Vector;
 import java.util.Iterator;
 
 public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Runnable {
-    String topic;
-    List<Integer> primes;
+    public String topic;
+    private Integer currentI = Integer.valueOf(2);
+    public List<Integer> primes;
 
     public
     PrimeProducer(ListType listType, Properties props)
@@ -31,32 +31,42 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
     void
     run()
     {
-      primes.add(2);
-      this.send(new ProducerRecord<>(this.topic, 2, 2));
-
-      int i = 3;
       while (true)
       {
-        // System.out.printf("produce prime");
-        boolean isPrime = true;
-        Iterator<Integer> j = primes.iterator();
-        while (j.hasNext())
-        {
-          if (i % j.next() == 0) {
-            isPrime = false;
-            break;
-          }
-        }
-
-        if (isPrime)
-        {
-          primes.add(i);
-          this.send(new ProducerRecord<>(topic, i, i));
-        }
-
-        i++;
+        Integer p = this.nextPrime();
+        // System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
+        this.send(new ProducerRecord<>(this.topic, p, p));
       }
 
       // producer.close();
+    }
+
+    public
+    Integer
+    nextPrime()
+    {
+      boolean isPrime = true;
+      Iterator<Integer> j = this.primes.iterator();
+      while (j.hasNext())
+      {
+        if (this.currentI % j.next() == 0)
+        {
+          isPrime = false;
+          break;
+        }
+      }
+
+      if (isPrime)
+      {
+        int newPrime = this.currentI;
+        this.primes.add(newPrime);
+        this.currentI++;
+        return newPrime;
+      }
+      else
+      {
+        this.currentI++;
+        return this.nextPrime(); // recursion
+      }
     }
 }

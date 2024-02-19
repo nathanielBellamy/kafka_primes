@@ -21,12 +21,12 @@ public class KafkaPrimes {
   void
   init() {
     Properties producerProps = KafkaPrimes.producerProps();
-    PrimeProducer producerArray = new PrimeProducer(ListType.ARRAY_LIST, producerProps); //KafkaPrimes.producerProps());
-    PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, producerProps); //KafkaPrimes.producerProps());
-    PrimeProducer producerVector = new PrimeProducer(ListType.VECTOR, producerProps); //KafkaPrimes.producerProps());
+    PrimeProducer producerArray = new PrimeProducer(ListType.ARRAY_LIST, producerProps);
+    PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, producerProps);
+    PrimeProducer producerVector = new PrimeProducer(ListType.VECTOR, producerProps);
 
     Properties consumerProps = KafkaPrimes.consumerProps();
-    PrimeConsumer consumer = new PrimeConsumer(consumerProps); //KafkaPrimes.consumerProps());
+    PrimeConsumer consumer = new PrimeConsumer(consumerProps);
 
     Thread consumerThread = new Thread(consumer);
     consumerThread.start();
@@ -39,8 +39,6 @@ public class KafkaPrimes {
 
     Thread producerVectorThread = new Thread(producerVector);
     producerVectorThread.start();
-
-    // Thread[] threads = { consumerThread, producerThread };
   }
 
   public

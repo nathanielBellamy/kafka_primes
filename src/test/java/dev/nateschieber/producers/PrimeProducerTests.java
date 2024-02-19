@@ -16,7 +16,17 @@ class PrimeProducerTests {
 
 	@Test
   void producesPrimes() {
-    // TODO
+    PrimeProducer producer = new PrimeProducer(ListType.ARRAY_LIST, KafkaPrimes.producerProps());
+
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(2));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(3));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(5));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(7));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(11));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(13));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(17));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(19));
+    assertThat(producer.nextPrime()).isEqualTo(Integer.valueOf(23));
   }
 
   @Test
