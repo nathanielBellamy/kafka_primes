@@ -11,6 +11,7 @@ import java.util.Vector;
 import java.util.Iterator;
 
 public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Runnable {
+    String topic;
     List<Integer> primes;
 
     public
@@ -19,9 +20,9 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
       super(props);
 
       switch (listType) {
-          case ARRAY_LIST     -> this.primes = new ArrayList<Integer>();
-          case LINKED_LIST    -> this.primes = new LinkedList<Integer>();
-          case VECTOR         -> this.primes = new Vector<Integer>();
+          case ARRAY_LIST     -> { this.primes = new ArrayList<Integer>();     this.topic = "primes_array";  }
+          case LINKED_LIST    -> { this.primes = new LinkedList<Integer>();    this.topic = "primes_linked"; }
+          case VECTOR         -> { this.primes = new Vector<Integer>();        this.topic = "primes_vector"; }
           default             -> throw new IllegalArgumentException("Unrecognized List Type");
       }
     }
@@ -30,10 +31,8 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
     void
     run()
     {
-      String topic = "primes";
-
       primes.add(2);
-      this.send(new ProducerRecord<>(topic, 2, 2));
+      this.send(new ProducerRecord<>(this.topic, 2, 2));
 
       int i = 3;
       while (true)

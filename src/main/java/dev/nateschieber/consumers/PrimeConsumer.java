@@ -19,16 +19,14 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
     void
     run()
     {
-        String topic = "primes";
-
-        this.subscribe(Arrays.asList(topic));
+        this.subscribe(Arrays.asList("primes_array", "primes_linked", "primes_vector"));
 
         while (true)
         {
           // System.out.printf("consume primes");
           ConsumerRecords<Integer, Integer> records = this.poll(Duration.ofMillis(100));
           records.forEach(record -> {
-            System.out.printf("offset = %d, key = %d, value = %d%n", record.offset(), record.key(), record.value());
+            System.out.printf("topic - %s,offset = %d, key = %d, value = %d%n", record.topic(), record.offset(), record.key(), record.value());
           });
         }
     }

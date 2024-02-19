@@ -31,4 +31,15 @@ class PrimeProducerTests {
     assertThat(producerVector.primes).isInstanceOf(Vector.class);
   }
 
+  @Test
+  void
+  storesTopicString() {
+    PrimeProducer producerArray = new PrimeProducer(ListType.ARRAY_LIST, KafkaPrimes.producerProps());
+    PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, KafkaPrimes.producerProps());
+    PrimeProducer producerVector = new PrimeProducer(ListType.VECTOR, KafkaPrimes.producerProps());
+
+    assertThat(producerArray.topic).isEqualTo("primes_array");
+    assertThat(producerLinked.topic).isEqualTo("primes_linked");
+    assertThat(producerVector.topic).isEqualTo("primes_vector");
+  }
 }
