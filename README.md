@@ -2,6 +2,17 @@
 
 
 ## To Run:
+- from within the directory containing the Kafka runtime
+  - start zookeeper
+```
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+```
+  - start kafka
+```
+bin/kafka-server-start.sh config/server.properties
+```
+
 ```
 ./gradlew bootRun
 ```
