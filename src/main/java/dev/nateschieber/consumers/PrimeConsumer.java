@@ -25,27 +25,34 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
     void
     run()
     {
-        this.subscribe(Arrays.asList("primes-array", "primes-linked", "primes-vector"));
-
-        while (true)
-        {
-          // System.out.printf("consume primes");
-          ConsumerRecords<Integer, Integer> records = this.poll(Duration.ofMillis(100));
-          records.forEach(record -> {
-            // System.out.printf("topic - %s,offset = %d, key = %d, value = %d%n", record.topic(), record.offset(), record.key(), record.value());
-            switch (record.topic()) {
-              case "primes-array"   -> this.newestArrayPrime = record.value();
-              case "primes-linked"  -> this.newestLinkedPrime = record.value();
-              case "primes-vector"  -> this.newestVectorPrime = record.value();
-            }
-
-            System.out.printf(
-              "\n array : %d \n linked: %d \n vector: %d \n===\n",
-              this.newestArrayPrime,
-              this.newestLinkedPrime,
-              this.newestVectorPrime
-            );
-          });
+      PrimeConsumer self = this;
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+        public void run() {
+          self.close();
         }
+      });
+
+      this.subscribe(Arrays.asList("primes-array", "primes-linked", "primes-vector"));
+
+      while (true)
+      {
+        // System.out.printf("consume primes");
+        ConsumerRecords<Integer, Integer> records = this.poll(Duration.ofMillis(100));
+        records.forEach(record -> {
+          // System.out.printf("topic - %s,offset = %d, key = %d, value = %d%n", record.topic(), record.offset(), record.key(), record.value());
+          switch (record.topic()) {
+            case "primes-array"   -> this.newestArrayPrime = record.value();
+            case "primes-linked"  -> this.newestLinkedPrime = record.value();
+            case "primes-vector"  -> this.newestVectorPrime = record.value();
+          }
+
+          System.out.printf(
+            "\n array : %d \n linked: %d \n vector: %d \n===\n",
+            this.newestArrayPrime,
+            this.newestLinkedPrime,
+            this.newestVectorPrime
+          );
+        });
+      }
     }
 }

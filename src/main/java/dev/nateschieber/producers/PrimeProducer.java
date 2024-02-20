@@ -31,14 +31,19 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
     void
     run()
     {
+      PrimeProducer self = this;
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+        public void run() {
+          self.close();
+        }
+      });
+
       while (true)
       {
         Integer p = this.nextPrime();
         // System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
         this.send(new ProducerRecord<>(this.topic, p, p));
       }
-
-      // producer.close();
     }
 
     public
