@@ -31,12 +31,7 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
     void
     run()
     {
-      PrimeProducer self = this;
-      Runtime.getRuntime().addShutdownHook(new Thread() {
-        public void run() {
-          self.close();
-        }
-      });
+      this.createShutdownHook();
 
       while (true)
       {
@@ -44,6 +39,18 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
         // System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
         this.send(new ProducerRecord<>(this.topic, p, p));
       }
+    }
+
+    private
+    void
+    createShutdownHook()
+    {
+      PrimeProducer self = this;
+      Runtime.getRuntime().addShutdownHook(new Thread() {
+        public void run() {
+          self.close();
+        }
+      });
     }
 
     public

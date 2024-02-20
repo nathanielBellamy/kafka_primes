@@ -9,7 +9,6 @@ import org.apache.kafka.clients.admin.NewTopic;
 
 import java.util.Properties;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -41,7 +40,28 @@ public class KafkaPrimes {
   init()
   {
     KafkaPrimes.createTopics();
+    List<Thread> threads = KafkaPrimes.createThreads();
+    KafkaPrimes.createShutdownHandler(threads);
+  }
 
+  private
+  static
+  void
+  createTopics() {
+    AdminClient client = AdminClient.create(KafkaPrimes.consumerProps());
+
+    KafkaPrimes.createTopicIfDoesNotExist("primes-array", client);
+    KafkaPrimes.createTopicIfDoesNotExist("primes-linked", client);
+    KafkaPrimes.createTopicIfDoesNotExist("primes-vector", client);
+
+    client.close();
+    System.out.println("Kafka Topics Create: SUCCESS");
+  }
+
+  private
+  static
+  List<Thread>
+  createThreads() {
     Properties producerProps = KafkaPrimes.producerProps();
     PrimeProducer producerArray = new PrimeProducer(ListType.ARRAY_LIST, producerProps);
     PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, producerProps);
@@ -69,6 +89,14 @@ public class KafkaPrimes {
       producerVectorThread
     );
 
+    return threads;
+  }
+
+  private
+  static
+  void
+  createShutdownHandler(List<Thread> threads)
+  {
     Thread shutdownHandler = new Thread(() -> {
       System.out.println("\n Terminating KafkaPrimes...");
       Iterator<Thread> i = threads.iterator();
@@ -84,20 +112,6 @@ public class KafkaPrimes {
     });
 
     Runtime.getRuntime().addShutdownHook(shutdownHandler);
-  }
-
-  private
-  static
-  void
-  createTopics() {
-    AdminClient client = AdminClient.create(KafkaPrimes.consumerProps());
-
-    KafkaPrimes.createTopicIfDoesNotExist("primes-array", client);
-    KafkaPrimes.createTopicIfDoesNotExist("primes-linked", client);
-    KafkaPrimes.createTopicIfDoesNotExist("primes-vector", client);
-
-    client.close();
-    System.out.println("Kafka Topics Create: SUCCESS");
   }
 
   private
