@@ -24,15 +24,15 @@ import dev.nateschieber.producers.ListType;
 @SpringBootApplication
 public class KafkaPrimes {
 
-	public
+  public
   static
   void
   main(String[] args)
   {
-		SpringApplication.run(KafkaPrimes.class, args);
+    SpringApplication.run(KafkaPrimes.class, args);
 
     KafkaPrimes.init();
-	}
+  }
 
   private
   static
