@@ -15,11 +15,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.ExecutionException;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 import java.lang.InterruptedException;
 
-import dev.nateschieber.consumers.PrimeConsumer;
-import dev.nateschieber.producers.PrimeProducer;
-import dev.nateschieber.producers.ListType;
+import dev.nateschieber.kafka_primes.consumers.PrimeConsumer;
+import dev.nateschieber.kafka_primes.producers.PrimeProducer;
+import dev.nateschieber.kafka_primes.algorithms.AlgorithmType;
+import dev.nateschieber.kafka_primes.algorithms.CollectionType;
 
 @SpringBootApplication
 public class KafkaPrimes {
@@ -50,9 +52,16 @@ public class KafkaPrimes {
   createTopics() {
     AdminClient client = AdminClient.create(KafkaPrimes.consumerProps());
 
-    KafkaPrimes.createTopicIfDoesNotExist("primes-array", client);
-    KafkaPrimes.createTopicIfDoesNotExist("primes-linked", client);
-    KafkaPrimes.createTopicIfDoesNotExist("primes-vector", client);
+    List<String> topics = Arrays.asList(CollectionType.values())
+                                .stream()
+                                .map((v) -> "PRIMES_" + v)
+                                .collect(Collectors.toList());
+
+    Iterator<String> j = topics.iterator();
+    while (j.hasNext())
+    {
+      KafkaPrimes.createTopicIfDoesNotExist(j.next(), client);
+    }
 
     client.close();
     System.out.println("Kafka Topics Create: SUCCESS");
@@ -63,9 +72,9 @@ public class KafkaPrimes {
   List<Thread>
   createThreads() {
     Properties producerProps = KafkaPrimes.producerProps();
-    PrimeProducer producerArray = new PrimeProducer(ListType.ARRAY_LIST, producerProps);
-    PrimeProducer producerLinked = new PrimeProducer(ListType.LINKED_LIST, producerProps);
-    PrimeProducer producerVector = new PrimeProducer(ListType.VECTOR, producerProps);
+    PrimeProducer producerArray = new PrimeProducer(AlgorithmType.NAIVE, CollectionType.ARRAY_LIST, producerProps);
+    PrimeProducer producerLinked = new PrimeProducer(AlgorithmType.NAIVE, CollectionType.LINKED_LIST, producerProps);
+    PrimeProducer producerVector = new PrimeProducer(AlgorithmType.NAIVE, CollectionType.VECTOR, producerProps);
 
     Properties consumerProps = KafkaPrimes.consumerProps();
     PrimeConsumer consumer = new PrimeConsumer(consumerProps);
