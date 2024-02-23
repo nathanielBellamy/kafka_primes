@@ -30,7 +30,7 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
       while (true)
       {
         Integer p = primeAlgorithm.nextPrime();
-        System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
+        // System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
         this.send(new ProducerRecord<>(this.topic, p, p));
       }
     }
