@@ -1,16 +1,19 @@
-package dev.nateschieber.consumers;
+package dev.nateschieber.kafka_primes.consumers;
 
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+
+import dev.nateschieber.kafka_primes.enums.CollectionType;
 
 public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Runnable{
-  public int newestArrayPrime  = -1;
-  public int newestLinkedPrime = -1;
-  public int newestVectorPrime = -1;
+  public HashMap<String, Integer> newest;
 
   public String leader;
 
@@ -25,8 +28,7 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
   run()
   {
     this.createShutdownHook();
-
-    this.subscribe(Arrays.asList("primes-array", "primes-linked", "primes-vector"));
+    this.subscribeToTopics();
 
     while (true)
     {
@@ -34,20 +36,26 @@ public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Ru
       ConsumerRecords<Integer, Integer> records = this.poll(Duration.ofMillis(100));
       records.forEach(record -> {
         // System.out.printf("topic - %s,offset = %d, key = %d, value = %d%n", record.topic(), record.offset(), record.key(), record.value());
-        switch (record.topic()) {
-          case "primes-array"   -> this.newestArrayPrime = record.value();
-          case "primes-linked"  -> this.newestLinkedPrime = record.value();
-          case "primes-vector"  -> this.newestVectorPrime = record.value();
-        }
+        this.newest.put(record.topic(), record.value());
 
         System.out.printf(
           "\n array : %d \n linked: %d \n vector: %d \n===\n",
-          this.newestArrayPrime,
-          this.newestLinkedPrime,
-          this.newestVectorPrime
+          this.newest.get("PRIMES_ARRAY_LIST"),
+          this.newest.get("PRIMES_LINKED_LIST"),
+          this.newest.get("PRIMES_VECTOR")
         );
       });
     }
+  }
+
+  private
+  void
+  subscribeToTopics() {
+    List<String> topics = Arrays.asList(CollectionType.values())
+                                .stream()
+                                .map((v) -> "PRIMES_" + v)
+                                .collect(Collectors.toList());
+    this.subscribe(topics);
   }
 
   private
