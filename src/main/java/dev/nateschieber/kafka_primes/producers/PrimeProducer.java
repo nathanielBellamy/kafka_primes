@@ -3,14 +3,10 @@ package dev.nateschieber.kafka_primes.producers;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import java.util.Properties;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Vector;
 
-import dev.nateschieber.kafka_primes.algorithms.AlgorithmType;
-import dev.nateschieber.kafka_primes.algorithms.CollectionType;
 import dev.nateschieber.kafka_primes.algorithms.PrimeAlgorithm;
+import dev.nateschieber.kafka_primes.enums.AlgorithmType;
+import dev.nateschieber.kafka_primes.enums.CollectionType;
 
 public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Runnable {
     public String topic;
@@ -34,7 +30,7 @@ public class PrimeProducer extends KafkaProducer<Integer, Integer> implements Ru
       while (true)
       {
         Integer p = primeAlgorithm.nextPrime();
-        // System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
+        System.out.printf("topic: %s ==== newPrime: %d", this.topic, p);
         this.send(new ProducerRecord<>(this.topic, p, p));
       }
     }

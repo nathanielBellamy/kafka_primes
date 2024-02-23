@@ -20,8 +20,8 @@ import java.lang.InterruptedException;
 
 import dev.nateschieber.kafka_primes.consumers.PrimeConsumer;
 import dev.nateschieber.kafka_primes.producers.PrimeProducer;
-import dev.nateschieber.kafka_primes.algorithms.AlgorithmType;
-import dev.nateschieber.kafka_primes.algorithms.CollectionType;
+import dev.nateschieber.kafka_primes.enums.AlgorithmType;
+import dev.nateschieber.kafka_primes.enums.CollectionType;
 
 @SpringBootApplication
 public class KafkaPrimes {
@@ -43,7 +43,7 @@ public class KafkaPrimes {
   {
     KafkaPrimes.createTopics();
     List<Thread> threads = KafkaPrimes.createThreads();
-    KafkaPrimes.createShutdownHandler(threads);
+    KafkaPrimes.createShutdownHook(threads);
   }
 
   private
@@ -72,9 +72,21 @@ public class KafkaPrimes {
   List<Thread>
   createThreads() {
     Properties producerProps = KafkaPrimes.producerProps();
-    PrimeProducer producerArray = new PrimeProducer(AlgorithmType.NAIVE, CollectionType.ARRAY_LIST, producerProps);
-    PrimeProducer producerLinked = new PrimeProducer(AlgorithmType.NAIVE, CollectionType.LINKED_LIST, producerProps);
-    PrimeProducer producerVector = new PrimeProducer(AlgorithmType.NAIVE, CollectionType.VECTOR, producerProps);
+    PrimeProducer producerArray = new PrimeProducer(
+      AlgorithmType.NAIVE,
+      CollectionType.ARRAY_LIST,
+      producerProps
+    );
+    PrimeProducer producerLinked = new PrimeProducer(
+      AlgorithmType.NAIVE,
+      CollectionType.LINKED_LIST,
+      producerProps
+    );
+    PrimeProducer producerVector = new PrimeProducer(
+      AlgorithmType.NAIVE,
+      CollectionType.VECTOR,
+      producerProps
+    );
 
     Properties consumerProps = KafkaPrimes.consumerProps();
     PrimeConsumer consumer = new PrimeConsumer(consumerProps);
@@ -104,7 +116,7 @@ public class KafkaPrimes {
   private
   static
   void
-  createShutdownHandler(List<Thread> threads)
+  createShutdownHook(List<Thread> threads)
   {
     Thread shutdownHandler = new Thread(() -> {
       System.out.println("\n Terminating KafkaPrimes...");

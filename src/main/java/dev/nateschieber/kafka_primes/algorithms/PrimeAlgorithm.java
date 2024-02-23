@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import dev.nateschieber.kafka_primes.enums.AlgorithmType;
+import dev.nateschieber.kafka_primes.enums.CollectionType;
+
 public abstract class PrimeAlgorithm {
   private Integer N = Integer.valueOf(2);
   public Collection<Integer> primes;
@@ -17,8 +20,8 @@ public abstract class PrimeAlgorithm {
     PrimeAlgorithm alg;
 
     switch (algorithmType) {
-      case NAIVE  -> alg = new NaiveAlgorithm();
-      default     -> throw new IllegalArgumentException("Unrecognized Algorithm Type");
+      case AlgorithmType.NAIVE -> alg = new NaiveAlgorithm();
+      default                  -> throw new IllegalArgumentException("Unrecognized Algorithm Type");
     }
 
     alg.setCollectionType(collectionType);
