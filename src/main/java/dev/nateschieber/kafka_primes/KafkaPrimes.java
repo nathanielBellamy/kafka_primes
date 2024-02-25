@@ -41,7 +41,8 @@ public class KafkaPrimes {
   void
   init()
   {
-    KafkaPrimes.createTopics();
+    // TODO: does createTopics unnecessarily duplicate Kafka default behavior?
+    // KafkaPrimes.createTopics();
     List<Thread> threads = KafkaPrimes.createThreads();
     KafkaPrimes.createShutdownHook(threads);
   }
