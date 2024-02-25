@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import dev.nateschieber.kafka_primes.enums.CollectionType;
 
 public class PrimeConsumer extends KafkaConsumer<Integer, Integer> implements Runnable{
-  public HashMap<String, Integer> newest;
+  public HashMap<String, Integer> newest = new HashMap<String, Integer>();
 
   public String leader;
 

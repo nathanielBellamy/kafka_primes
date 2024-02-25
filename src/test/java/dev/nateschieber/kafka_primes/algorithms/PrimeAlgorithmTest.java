@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import dev.nateschieber.kafka_primes.KafkaPrimes;
+import dev.nateschieber.kafka_primes.algorithms.PrimeAlgorithmBuilder;
 import dev.nateschieber.kafka_primes.enums.AlgorithmType;
 import dev.nateschieber.kafka_primes.enums.CollectionType;
 
@@ -17,10 +18,10 @@ class PrimeAlgorithmTests {
 	@Test
   void producesTheSamePrimesWithEveryAlgorithm() {
     // TODO: other algorithms
-    PrimeAlgorithm algorithm = PrimeAlgorithm.create(
-      AlgorithmType.NAIVE,
-      CollectionType.ARRAY_LIST
-    );
+    PrimeAlgorithm algorithm = new PrimeAlgorithmBuilder()
+                                .withAlgorithmType(AlgorithmType.NAIVE)
+                                .withCollectionType(CollectionType.ARRAY_LIST)
+                                .build();
 
     assertThat(algorithm.nextPrime()).isEqualTo(Integer.valueOf(2));
     assertThat(algorithm.nextPrime()).isEqualTo(Integer.valueOf(3));
@@ -36,18 +37,18 @@ class PrimeAlgorithmTests {
   @Test
   void
   storesPrimesInSpecifiedCollectionType() {
-    PrimeAlgorithm algorithmArray = PrimeAlgorithm.create(
-      AlgorithmType.NAIVE,
-      CollectionType.ARRAY_LIST
-    );
-    PrimeAlgorithm algorithmLinked = PrimeAlgorithm.create(
-      AlgorithmType.NAIVE,
-      CollectionType.LINKED_LIST
-    );
-    PrimeAlgorithm algorithmVector = PrimeAlgorithm.create(
-      AlgorithmType.NAIVE,
-      CollectionType.VECTOR
-    );
+    PrimeAlgorithm algorithmArray = new PrimeAlgorithmBuilder()
+                                      .withAlgorithmType(AlgorithmType.NAIVE)
+                                      .withCollectionType(CollectionType.ARRAY_LIST)
+                                      .build();
+    PrimeAlgorithm algorithmLinked = new PrimeAlgorithmBuilder()
+                                      .withAlgorithmType(AlgorithmType.NAIVE)
+                                      .withCollectionType(CollectionType.LINKED_LIST)
+                                      .build();
+    PrimeAlgorithm algorithmVector = new PrimeAlgorithmBuilder()
+                                      .withAlgorithmType(AlgorithmType.NAIVE)
+                                      .withCollectionType(CollectionType.VECTOR)
+                                      .build();
 
     assertThat(algorithmArray.primes).isInstanceOf(ArrayList.class);
     assertThat(algorithmLinked.primes).isInstanceOf(LinkedList.class);
