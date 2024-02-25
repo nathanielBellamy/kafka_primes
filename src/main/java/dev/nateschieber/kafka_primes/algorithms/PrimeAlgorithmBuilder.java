@@ -12,9 +12,7 @@ public class PrimeAlgorithmBuilder {
 
   public
   PrimeAlgorithmBuilder()
-  {
-    // this.alg = new NaiveAlgorithm();
-  }
+  {}
 
   public
   PrimeAlgorithmBuilder
